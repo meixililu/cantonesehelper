@@ -16,9 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
@@ -34,18 +32,9 @@ import com.messi.cantonese.study.R;
 import com.messi.cantonese.study.RecommendActivity;
 import com.messi.cantonese.study.SettingActivity;
 import com.messi.cantonese.study.adapter.MainPageAdapter;
-import com.messi.cantonese.study.util.LogUtil;
-import com.messi.cantonese.study.util.ToastUtil;
-import com.messi.cantonese.study.util.WechatUtil;
 import com.messi.cantonese.study.views.PagerSlidingTabStrip;
-import com.tencent.mm.sdk.openapi.BaseReq;
-import com.tencent.mm.sdk.openapi.BaseResp;
-import com.tencent.mm.sdk.openapi.ConstantsAPI;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
-public class WXEntryActivity extends SherlockFragmentActivity implements IWXAPIEventHandler,OnClickListener {
+public class WXEntryActivity extends SherlockFragmentActivity implements OnClickListener {
 	
 	private DrawerLayout mDrawerLayout;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -55,9 +44,7 @@ public class WXEntryActivity extends SherlockFragmentActivity implements IWXAPIE
 	private MainPageAdapter mAdapter;
 	
 	private String[] mPlanetTitles;
-	private IWXAPI api;
 	private long exitTime = 0;
-	private Bundle bundle;
 	private boolean isRespondWX;
 	public static int currentIndex = 0;
 	public ActionBar mActionBar;
@@ -89,9 +76,6 @@ public class WXEntryActivity extends SherlockFragmentActivity implements IWXAPIE
 	
 	private void initDatas(){
 		setMiddleVolume();
-		api = WXAPIFactory.createWXAPI(this, WechatUtil.APP_ID, true);
-		bundle = getIntent().getExtras();
-		api.handleIntent(getIntent(), this);
 		SpeechUser.getUser().login(this, null, null, "appid=" + getString(R.string.app_id), null);
 	}
 	
@@ -101,7 +85,7 @@ public class WXEntryActivity extends SherlockFragmentActivity implements IWXAPIE
         mDrawerList = (ListView) findViewById(R.id.left_drawer);
 		viewPager = (ViewPager) findViewById(R.id.pager);
 		indicator = (PagerSlidingTabStrip) findViewById(R.id.indicator);
-		mAdapter = new MainPageAdapter(this.getSupportFragmentManager(),bundle);
+		mAdapter = new MainPageAdapter(this.getSupportFragmentManager());
 		viewPager.setAdapter(mAdapter);
 		viewPager.setOffscreenPageLimit(3);
 		indicator.setViewPager(viewPager);
@@ -234,44 +218,9 @@ public class WXEntryActivity extends SherlockFragmentActivity implements IWXAPIE
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		setIntent(intent);
-        api.handleIntent(intent, this);
 	}
 
-	@Override
-	public void onReq(BaseReq req) {
-		switch (req.getType()) {
-		case ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX:
-			isRespondWX = true;	
-			LogUtil.DefalutLog("respond wx");
-			break;
-		case ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX:
-			isRespondWX = false;	
-			LogUtil.DefalutLog("show message wx");
-			break;
-		}
-	}
 
-	@Override
-	public void onResp(BaseResp resp) {
-		int result = 0;
-		switch (resp.errCode) {
-		case BaseResp.ErrCode.ERR_OK:
-			result = R.string.errcode_success;
-			break;
-		case BaseResp.ErrCode.ERR_USER_CANCEL:
-			result = R.string.errcode_cancel;
-			break;
-		case BaseResp.ErrCode.ERR_AUTH_DENIED:
-			result = R.string.errcode_deny;
-			break;
-		default:
-			result = R.string.errcode_unknown;
-			break;
-		}
-		ToastUtil.diaplayMesShort(this, result);
-		LogUtil.DefalutLog("onResp");
-	}
-	
 	@Override
 	protected void onResume() {
 		super.onResume();

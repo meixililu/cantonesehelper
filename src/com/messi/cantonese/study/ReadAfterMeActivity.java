@@ -2,9 +2,10 @@ package com.messi.cantonese.study;
 
 import java.util.ArrayList;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +15,20 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.iflytek.cloud.speech.SpeechRecognizer;
 import com.iflytek.cloud.speech.SpeechSynthesizer;
 import com.messi.cantonese.study.bean.DialogBean;
 import com.messi.cantonese.study.util.DialogUtil;
 import com.messi.cantonese.study.util.LogUtil;
 
-public class ReadAfterMeFragment extends Fragment implements OnClickListener{
+public class ReadAfterMeActivity extends SherlockFragmentActivity implements OnClickListener{
 
-	private View view;
+	public ActionBar mActionBar;
+	private SharedPreferences mSharedPreferences;
+	
 	private ListView dialog_listview;
 	private TextView stop_btn,start_btn;
 	private ArrayList<DialogBean> dialogList;
@@ -33,28 +39,6 @@ public class ReadAfterMeFragment extends Fragment implements OnClickListener{
 	private SpeechRecognizer mSpeechRecognizer;
 	private SpeechSynthesizer mSynthesizerPlayer;
 	private StringBuilder builder;
-	
-	private static ReadAfterMeFragment mReadAfterMeFragment;
-	
-	public static ReadAfterMeFragment getInstance(){
-		if(mReadAfterMeFragment == null){
-			mReadAfterMeFragment = new ReadAfterMeFragment();
-		}
-		return mReadAfterMeFragment;
-	}
-	
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		LogUtil.DefalutLog("ReadAfterMeFragment-onDestroy");
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		LogUtil.DefalutLog("ReadAfterMeFragment-onPause");
-		stop();
-	}
 	
 	private void stop(){
 		if(mSynthesizerPlayer != null){
@@ -68,59 +52,49 @@ public class ReadAfterMeFragment extends Fragment implements OnClickListener{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		iatDialog = new RecognizerDialog(getActivity(), "appid=" + getString(R.string.app_id));
-//		builder = new StringBuilder();
-//		iatDialog.setListener(new RecognizerDialogListener() {
-//			@Override
-//			public void onResults(ArrayList<RecognizerResult> results, boolean arg1) {
-//				for (RecognizerResult recognizerResult : results) {
-//					builder.append(recognizerResult.text);
-//				}
-//			}
-//			@Override
-//			public void onEnd(SpeechError arg0) {
-//				String content = builder.toString();
-//				if(currentItem != null){
-//					currentItem.setAnswer(content);
-//					adapter.notifyDataSetChanged();
-//					dialog_listview.setSelection(currentIndex);
-//					moveToNext();
-//					builder = new StringBuilder();
-//				}
-//			}
-//		});
-		mSynthesizerPlayer = SpeechSynthesizer.createSynthesizer(getActivity());
+		setContentView(R.layout.read_after_me_fragment);
+		init();
+		initData();
+		mSynthesizerPlayer = SpeechSynthesizer.createSynthesizer(this);
 	}
 	
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		view = inflater.inflate(R.layout.read_after_me_fragment, null);
-		init();
-		return view;
-	}
-
 	private void init() {
-		dialog_listview = (ListView)view.findViewById(R.id.dialog_listview);
-		stop_btn = (TextView)view.findViewById(R.id.stop_btn);
-		start_btn = (TextView)view.findViewById(R.id.start_btn);
+		mActionBar = getSupportActionBar();
+        mActionBar.setBackgroundDrawable(getResources().getDrawable(R.color.load_blue));
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setDisplayShowHomeEnabled(true);
+        mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setTitle("自我介绍");
+        mSharedPreferences = getSharedPreferences(this.getPackageName(), Activity.MODE_PRIVATE);
+		
+		dialog_listview = (ListView)findViewById(R.id.dialog_listview);
+		stop_btn = (TextView)findViewById(R.id.stop_btn);
+		start_btn = (TextView)findViewById(R.id.start_btn);
 		dialogList = new ArrayList<DialogBean>();
-		adapter = new MyListViewAdapter(getActivity());
+		adapter = new MyListViewAdapter(this);
 		dialog_listview.setAdapter(adapter);
 		
 		stop_btn.setOnClickListener(this);
 		start_btn.setOnClickListener(this);
 	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		dialogList = DialogUtil.getDialogList(getActivity());
+	
+	private void initData(){
+		dialogList = DialogUtil.getDialogList(this);
 		currentItem = dialogList.get(currentIndex);
 		adapter.notifyDataSetChanged();
 //		Start();
 		LogUtil.DefalutLog("ReadAfterMeFragment-onActivityCreated");
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:  
+			finish();
+		}
+       return super.onOptionsItemSelected(item);
+	}
+
 	private void reset(){
 		currentIndex = 0;
 		currentItem = dialogList.get(currentIndex);
@@ -215,4 +189,17 @@ public class ReadAfterMeFragment extends Fragment implements OnClickListener{
 		TextView dialog_a;
 		TextView dialog_b;
     }
+	
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		LogUtil.DefalutLog("ReadAfterMeFragment-onDestroy");
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		LogUtil.DefalutLog("ReadAfterMeFragment-onPause");
+		stop();
+	}
 }

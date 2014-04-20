@@ -12,7 +12,6 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.baidu.mobstat.StatService;
 import com.messi.cantonese.study.util.ToastUtil;
-import com.messi.cantonese.study.wxapi.WXEntryActivity;
 
 public class RecommendActivity extends SherlockFragmentActivity implements OnClickListener {
 

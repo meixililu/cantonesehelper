@@ -19,11 +19,11 @@ import com.messi.cantonese.study.util.SharedPreferencesUtil;
 public class SettingActivity extends SherlockFragmentActivity implements OnClickListener,SeekBar.OnSeekBarChangeListener {
 
 	public ActionBar mActionBar;
+	private SharedPreferences mSharedPreferences;
 	private TextView seekbar_text;
 	private SeekBar seekbar;
 	private FrameLayout speak_yueyu;
 	private CheckBox speak_yueyu_cb;
-	private SharedPreferences mSharedPreferences;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

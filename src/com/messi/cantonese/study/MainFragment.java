@@ -1,6 +1,5 @@
 package com.messi.cantonese.study;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.Header;
@@ -28,7 +27,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.baidu.mobstat.StatService;
 import com.iflytek.cloud.speech.RecognizerListener;
@@ -36,7 +34,6 @@ import com.iflytek.cloud.speech.RecognizerResult;
 import com.iflytek.cloud.speech.SpeechError;
 import com.iflytek.cloud.speech.SpeechRecognizer;
 import com.iflytek.cloud.speech.SpeechSynthesizer;
-import com.messi.cantonese.study.CollectedFragment.WaitTask;
 import com.messi.cantonese.study.adapter.CollectedListItemAdapter;
 import com.messi.cantonese.study.bean.DialogBean;
 import com.messi.cantonese.study.db.DataBaseUtil;
@@ -51,13 +48,8 @@ import com.messi.cantonese.study.util.SharedPreferencesUtil;
 import com.messi.cantonese.study.util.ToastUtil;
 import com.messi.cantonese.study.util.XFUtil;
 import com.messi.cantonese.study.wxapi.WXEntryActivity;
-import com.tencent.mm.sdk.openapi.BaseReq;
-import com.tencent.mm.sdk.openapi.BaseResp;
-import com.tencent.mm.sdk.openapi.ConstantsAPI;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
-public class MainFragment extends Fragment implements OnClickListener, IWXAPIEventHandler {
+public class MainFragment extends Fragment implements OnClickListener {
 
 	private EditText input_et;
 	private FrameLayout translate_to_ch_btn,translate_to_yy_btn;
@@ -76,7 +68,6 @@ public class MainFragment extends Fragment implements OnClickListener, IWXAPIEve
 	private CollectedListItemAdapter mAdapter;
 	private List<DialogBean> beans;
 	private String dstString = "";
-	private IWXAPI api;
 	private Animation fade_in,fade_out;
 
 	// 识别对象
@@ -89,16 +80,14 @@ public class MainFragment extends Fragment implements OnClickListener, IWXAPIEve
 	public static int speed;
 	public static boolean isSpeakYueyuNeedUpdate;
 	private DataBaseUtil mDataBaseUtil;
-	private Bundle bundle;
 	public static boolean isRespondWX;
 	public static boolean isRefresh;
 	private View view;
 	private static MainFragment mMainFragment;
 	
-	public static MainFragment getInstance(Bundle bundle){
+	public static MainFragment getInstance(){
 		if(mMainFragment == null){
 			mMainFragment = new MainFragment();
-			mMainFragment.bundle = bundle;
 		}
 		return mMainFragment;
 	}
@@ -163,7 +152,7 @@ public class MainFragment extends Fragment implements OnClickListener, IWXAPIEve
 		mDataBaseUtil = new DataBaseUtil(getActivity());
 		beans = mDataBaseUtil.getDataList(0, Settings.offset);
 		mAdapter = new CollectedListItemAdapter(getActivity(), mInflater, beans, 
-				mSpeechSynthesizer, mSharedPreferences, mDataBaseUtil, bundle, "MainFragment");
+				mSpeechSynthesizer, mSharedPreferences, mDataBaseUtil, "MainFragment");
 		recent_used_lv.setAdapter(mAdapter);
 		
 		String selectedLanguage = getSpeakLanguage();
@@ -464,40 +453,4 @@ public class MainFragment extends Fragment implements OnClickListener, IWXAPIEve
 			WXEntryActivity.mWXEntryActivity.setSupportProgressBarVisibility(false);
 		}
 	}
-	
-	@Override
-	public void onReq(BaseReq req) {
-		switch (req.getType()) {
-		case ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX:
-			isRespondWX = true;	
-			LogUtil.DefalutLog("respond wx");
-			break;
-		case ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX:
-			isRespondWX = false;	
-			LogUtil.DefalutLog("show message wx");
-			break;
-		}
-	}
-
-	@Override
-	public void onResp(BaseResp resp) {
-		int result = 0;
-		switch (resp.errCode) {
-		case BaseResp.ErrCode.ERR_OK:
-			result = R.string.errcode_success;
-			break;
-		case BaseResp.ErrCode.ERR_USER_CANCEL:
-			result = R.string.errcode_cancel;
-			break;
-		case BaseResp.ErrCode.ERR_AUTH_DENIED:
-			result = R.string.errcode_deny;
-			break;
-		default:
-			result = R.string.errcode_unknown;
-			break;
-		}
-		ToastUtil.diaplayMesShort(getActivity(), result);
-		LogUtil.DefalutLog("onResp");
-	}
-	
 }

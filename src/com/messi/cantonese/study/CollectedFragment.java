@@ -27,20 +27,14 @@ import com.messi.cantonese.study.util.LogUtil;
 import com.messi.cantonese.study.util.Settings;
 import com.messi.cantonese.study.util.ToastUtil;
 import com.messi.cantonese.study.wxapi.WXEntryActivity;
-import com.tencent.mm.sdk.openapi.BaseReq;
-import com.tencent.mm.sdk.openapi.BaseResp;
-import com.tencent.mm.sdk.openapi.ConstantsAPI;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
 
-public class CollectedFragment extends Fragment implements OnClickListener, IWXAPIEventHandler {
+public class CollectedFragment extends Fragment implements OnClickListener {
 
 	private PullToRefreshListView recent_used_lv;
 	private View view;
 	private LayoutInflater mInflater;
 	private CollectedListItemAdapter mAdapter;
 	private List<DialogBean> beans;
-	private IWXAPI api;
 
 	// 识别对象
 	private SpeechRecognizer recognizer;
@@ -50,17 +44,15 @@ public class CollectedFragment extends Fragment implements OnClickListener, IWXA
 	private SpeechSynthesizer mSpeechSynthesizer;
 
 	private DataBaseUtil mDataBaseUtil;
-	private Bundle bundle;
 	private int maxNumber = 0;
 	
 	public static boolean isRespondWX;
 	public static boolean isRefresh;
 	private static CollectedFragment mMainFragment;
 	
-	public static CollectedFragment getInstance(Bundle bundle){
+	public static CollectedFragment getInstance(){
 		if(mMainFragment == null){
 			mMainFragment = new CollectedFragment();
-			mMainFragment.bundle = bundle;
 		}
 		return mMainFragment;
 	}
@@ -93,7 +85,7 @@ public class CollectedFragment extends Fragment implements OnClickListener, IWXA
 		mDataBaseUtil = new DataBaseUtil(getActivity());
 		beans = mDataBaseUtil.getDataListCollected(0, Settings.offset);
 		mAdapter = new CollectedListItemAdapter(getActivity(), mInflater, beans, 
-				mSpeechSynthesizer, mSharedPreferences, mDataBaseUtil, bundle, "CollectedFragment");
+				mSpeechSynthesizer, mSharedPreferences, mDataBaseUtil, "CollectedFragment");
 		recent_used_lv.setAdapter(mAdapter);
 		
 		recent_used_lv.setOnRefreshListener(new OnRefreshListener<ListView>() {
@@ -159,41 +151,6 @@ public class CollectedFragment extends Fragment implements OnClickListener, IWXA
 	@Override
 	public void onClick(View v) {
 		
-	}
-
-	@Override
-	public void onReq(BaseReq req) {
-		switch (req.getType()) {
-		case ConstantsAPI.COMMAND_GETMESSAGE_FROM_WX:
-			isRespondWX = true;	
-			LogUtil.DefalutLog("respond wx");
-			break;
-		case ConstantsAPI.COMMAND_SHOWMESSAGE_FROM_WX:
-			isRespondWX = false;	
-			LogUtil.DefalutLog("show message wx");
-			break;
-		}
-	}
-
-	@Override
-	public void onResp(BaseResp resp) {
-		int result = 0;
-		switch (resp.errCode) {
-		case BaseResp.ErrCode.ERR_OK:
-			result = R.string.errcode_success;
-			break;
-		case BaseResp.ErrCode.ERR_USER_CANCEL:
-			result = R.string.errcode_cancel;
-			break;
-		case BaseResp.ErrCode.ERR_AUTH_DENIED:
-			result = R.string.errcode_deny;
-			break;
-		default:
-			result = R.string.errcode_unknown;
-			break;
-		}
-		ToastUtil.diaplayMesShort(getActivity(), result);
-		LogUtil.DefalutLog("onResp");
 	}
 	
 }

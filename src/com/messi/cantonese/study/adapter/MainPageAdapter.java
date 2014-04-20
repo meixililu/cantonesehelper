@@ -1,30 +1,29 @@
 package com.messi.cantonese.study.adapter;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.messi.cantonese.study.CollectedFragment;
+import com.messi.cantonese.study.DialogListFragment;
 import com.messi.cantonese.study.MainFragment;
-import com.messi.cantonese.study.ReadAfterMeFragment;
 
 public class MainPageAdapter extends FragmentPagerAdapter {
 
-	public static final String[] CONTENT = new String[] { "粤语助手", "我的收藏" };//, "情景对话", "我的收藏"
-	private Bundle bundle;
+	public static final String[] CONTENT = new String[] { "粤语助手", "粤语练习", "我的收藏" };//, , "我的收藏"
 	
-    public MainPageAdapter(FragmentManager fm,Bundle bundle) {
+    public MainPageAdapter(FragmentManager fm) {
         super(fm);
-        this.bundle = bundle;
     }
 
     @Override
     public Fragment getItem(int position) {
         if( position == 0 ){
-        	return MainFragment.getInstance(bundle);
+        	return MainFragment.getInstance();
         }else if( position == 1 ){
-        	return CollectedFragment.getInstance(bundle);
+        	return DialogListFragment.getInstance();
+        }else if( position == 2 ){
+        	return CollectedFragment.getInstance();
         }
         return null;
 //        else if( position == 2 ){

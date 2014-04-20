@@ -61,6 +61,11 @@
             android:theme="@style/Theme.Sherlock" >
         </activity>
         <activity
+            android:name=".ReadAfterMeActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Sherlock" >
+        </activity>
+        <activity
             android:name=".AboutActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Sherlock" >

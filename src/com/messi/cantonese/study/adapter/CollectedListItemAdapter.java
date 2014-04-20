@@ -42,7 +42,6 @@ import com.messi.cantonese.study.util.SharedPreferencesUtil;
 import com.messi.cantonese.study.util.ShowView;
 import com.messi.cantonese.study.util.StringUtils;
 import com.messi.cantonese.study.util.ToastUtil;
-import com.messi.cantonese.study.util.WechatUtil;
 import com.messi.cantonese.study.util.XFUtil;
 
 public class CollectedListItemAdapter extends BaseAdapter {
@@ -53,12 +52,11 @@ public class CollectedListItemAdapter extends BaseAdapter {
 	private DataBaseUtil mDataBaseUtil;
 	private SpeechSynthesizer mSpeechSynthesizer;
 	private SharedPreferences mSharedPreferences;
-	private Bundle bundle;
 	private String from;
 
 	public CollectedListItemAdapter(Context mContext,LayoutInflater mInflater,List<DialogBean> mBeans,
 			SpeechSynthesizer mSpeechSynthesizer,SharedPreferences mSharedPreferences,DataBaseUtil mDataBaseUtil,
-			Bundle bundle, String from) {
+			String from) {
 		LogUtil.DefalutLog("public CollectedListItemAdapter");
 		context = mContext;
 		beans = mBeans;
@@ -66,7 +64,6 @@ public class CollectedListItemAdapter extends BaseAdapter {
 		this.mSharedPreferences = mSharedPreferences;
 		this.mSpeechSynthesizer = mSpeechSynthesizer;
 		this.mDataBaseUtil = mDataBaseUtil;
-		this.bundle = bundle;
 		this.from = from;
 	}
 
@@ -198,15 +195,6 @@ public class CollectedListItemAdapter extends BaseAdapter {
 	 * 分享到微信联系人
 	 */
 	private void sendToWechat(String dstString){
-//		if(!TextUtils.isEmpty(dstString)){
-//			if(MainFragment.isRespondWX){
-//				WechatUtil.respMsgToWechat(context, bundle, dstString);
-//			}else{
-//				WechatUtil.sendMsgToWechat(context, dstString);
-//			}
-//		}else{
-//			showToast("微信分享失败，没有翻译结果！");
-//		}
 		Intent intent = new Intent(Intent.ACTION_SEND);    
 		intent.setType("text/plain"); // 纯文本     
 		intent.putExtra(Intent.EXTRA_SUBJECT, "分享");    
