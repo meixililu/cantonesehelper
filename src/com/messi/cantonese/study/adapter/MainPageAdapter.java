@@ -10,7 +10,7 @@ import com.messi.cantonese.study.MainFragment;
 
 public class MainPageAdapter extends FragmentPagerAdapter {
 
-	public static final String[] CONTENT = new String[] { "粤语助手", "粤语练习", "我的收藏" };//, , "我的收藏"
+	public static final String[] CONTENT = new String[] { "粤语助手", "我的收藏" };//, , "我的收藏" "粤语练习", 
 	
     public MainPageAdapter(FragmentManager fm) {
         super(fm);
@@ -20,9 +20,11 @@ public class MainPageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         if( position == 0 ){
         	return MainFragment.getInstance();
-        }else if( position == 1 ){
-        	return DialogListFragment.getInstance();
-        }else if( position == 2 ){
+        }
+//        else if( position == 1 ){
+//        	return DialogListFragment.getInstance();
+//        }
+        else if( position == 1 ){
         	return CollectedFragment.getInstance();
         }
         return null;

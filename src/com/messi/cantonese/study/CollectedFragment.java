@@ -114,7 +114,7 @@ public class CollectedFragment extends Fragment implements OnClickListener {
         		maxNumber = 0;
         		new WaitTask().execute();
         	}
-        	StatService.onEvent(getActivity(), "1.6_viewcollectedpage", "浏览收藏页面", 1);
+        	StatService.onEvent(getActivity(), "1.1_viewcollectedpage", "浏览收藏页面", 1);
         }
 	}
 	

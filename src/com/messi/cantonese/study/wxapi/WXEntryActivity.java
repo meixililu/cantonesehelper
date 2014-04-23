@@ -122,21 +122,21 @@ public class WXEntryActivity extends SherlockFragmentActivity implements OnClick
 					Intent intent = new Intent(Intent.ACTION_VIEW);
 					intent.setData(Uri.parse("market://details?id=com.messi.cantonese.study"));
 					startActivity(intent);
-					StatService.onEvent(WXEntryActivity.this, "1.6_commend", "吐槽评价按钮", 1);
+					StatService.onEvent(WXEntryActivity.this, "1.1_commend", "吐槽评价按钮", 1);
 				}else{
 					Intent intent = new Intent();
 					if(position == 0){
 						intent.setClass(WXEntryActivity.this, SettingActivity.class);
-						StatService.onEvent(WXEntryActivity.this, "1.6_settingbtn", "应用设置按钮", 1);
+						StatService.onEvent(WXEntryActivity.this, "1.1_settingbtn", "应用设置按钮", 1);
 					}else if(position == 1){
 						intent.setClass(WXEntryActivity.this, RecommendActivity.class);
-						StatService.onEvent(WXEntryActivity.this, "1.6_recommendbtn", "推荐应用按钮", 1);
+						StatService.onEvent(WXEntryActivity.this, "1.1_recommendbtn", "推荐应用按钮", 1);
 					}else if(position == 3){
 						intent.setClass(WXEntryActivity.this, HelpActivity.class);
-						StatService.onEvent(WXEntryActivity.this, "1.7_help", "使用帮助按钮", 1);
+						StatService.onEvent(WXEntryActivity.this, "1.1_help", "使用帮助按钮", 1);
 					}else if(position == 4){
 						intent.setClass(WXEntryActivity.this, AboutActivity.class);
-						StatService.onEvent(WXEntryActivity.this, "1.6_aboutus", "关于我们按钮", 1);
+						StatService.onEvent(WXEntryActivity.this, "1.1_aboutus", "关于我们按钮", 1);
 					}
 					WXEntryActivity.this.startActivity(intent);
 					if (mDrawerLayout.isDrawerOpen(mDrawerList)) {
@@ -173,7 +173,7 @@ public class WXEntryActivity extends SherlockFragmentActivity implements OnClick
 		switch (item.getItemId()) {
 		case android.R.id.home:  
 			menu();
-			StatService.onEvent(this, "1.6_homemenu", "主页左上角菜单", 1);
+			StatService.onEvent(this, "1.1_homemenu", "主页左上角菜单", 1);
 		}
        return super.onOptionsItemSelected(item);
 	}
@@ -238,7 +238,7 @@ public class WXEntryActivity extends SherlockFragmentActivity implements OnClick
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_MENU:
 			 menu();
-			 StatService.onEvent(this, "1.6_xitongmenu", "系统菜单按钮", 1);
+			 StatService.onEvent(this, "1.1_xitongmenu", "系统菜单按钮", 1);
 			 return true;
 		case KeyEvent.KEYCODE_VOLUME_UP:
 			 adjustStreamVolume(keyCode);

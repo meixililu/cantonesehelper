@@ -171,17 +171,17 @@ public class MainFragment extends Fragment implements OnClickListener {
 		if (v.getId() == R.id.translate_to_ch_btn) {
 			hideIME();
 			submit(false);
-			StatService.onEvent(getActivity(), "1.6_fanyibtn", "翻译按钮", 1);
+			StatService.onEvent(getActivity(), "1.1_fanyitochbtn", "翻译成中文按钮", 1);
 		}else if (v.getId() == R.id.translate_to_yy_btn) {
 			hideIME();
 			submit(true);
-			StatService.onEvent(getActivity(), "1.6_fanyibtn", "翻译按钮", 1);
+			StatService.onEvent(getActivity(), "1.1_fanyitoyueyubtn", "翻译成粤语按钮", 1);
 		}else if (v.getId() == R.id.speak_round_layout) {
 			showIatDialog();
-			StatService.onEvent(getActivity(), "1.6_shuohuabtn", "说话按钮", 1);
+			StatService.onEvent(getActivity(), "1.1_shuohuabtn", "说话按钮", 1);
 		}else if (v.getId() == R.id.clear_btn_layout) {
 			input_et.setText("");
-			StatService.onEvent(getActivity(), "1.6_clearbtn", "清空按钮", 1);
+			StatService.onEvent(getActivity(), "1.1_clearbtn", "清空按钮", 1);
 		}else if (v.getId() == R.id.baidu_translate) {
 			try {
 				Intent intent = new Intent("android.intent.action.VIEW", Uri.parse("http://fanyi.baidu.com"));
@@ -192,13 +192,13 @@ public class MainFragment extends Fragment implements OnClickListener {
 		}else if (v.getId() == R.id.cb_speak_language_ch) {
 			cb_speak_language_en.setChecked(false);
 			setSpeakLanguage(XFUtil.AccentCH);
-			ToastUtil.diaplayMesShort(getActivity(), "请说普通话");
-			StatService.onEvent(getActivity(), "1.6_putonghuabtn", "普通话按钮", 1);
+			ToastUtil.diaplayMesShort(getActivity(), "请点击话筒说普通话");
+			StatService.onEvent(getActivity(), "1.1_putonghuabtn", "普通话按钮", 1);
 		}else if (v.getId() == R.id.cb_speak_language_en) {
 			cb_speak_language_ch.setChecked(false);
 			setSpeakLanguage(XFUtil.AccentHK);
-			ToastUtil.diaplayMesShort(getActivity(), "请说粤语");
-			StatService.onEvent(getActivity(), "1.6_yingyubtn", "英语按钮", 1);
+			ToastUtil.diaplayMesShort(getActivity(), "请点击话筒说粤语");
+			StatService.onEvent(getActivity(), "1.1_yueyubtn", "粤语按钮", 1);
 		}
 	}
 	
@@ -446,7 +446,6 @@ public class MainFragment extends Fragment implements OnClickListener {
 		Settings.q = input_et.getText().toString().trim();
 		if (!TextUtils.isEmpty(Settings.q)) {
 			RequestAsyncTask();
-			StatService.onEvent(getActivity(), BaiduStatistics.TranslateBtn, "翻译按钮", 1);
 		} else {
 			showToast("请输入需要翻译的内容！");
 			WXEntryActivity.mWXEntryActivity.setSupportProgressBarIndeterminateVisibility(false);

@@ -60,7 +60,7 @@ public class RecommendActivity extends SherlockFragmentActivity implements OnCli
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			StatService.onEvent(RecommendActivity.this, "1.6_zyzsbtn", "点击中英助手按钮", 1);
+			StatService.onEvent(RecommendActivity.this, "1.1_zyzsbtn", "点击中英助手按钮", 1);
 			break;
 		case R.id.recommend_yyzs:
 			try {
@@ -70,7 +70,7 @@ public class RecommendActivity extends SherlockFragmentActivity implements OnCli
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			StatService.onEvent(RecommendActivity.this, "1.6_yyzsbtn", "点击中英互译按钮", 1);
+			StatService.onEvent(RecommendActivity.this, "1.1_zyhybtn", "点击中英互译按钮", 1);
 			break;
 		default:
 			break;
